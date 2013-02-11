@@ -1,11 +1,12 @@
 package cs.man.ac.uk.tavernamobile.serverresource.xml;
 
 import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Namespace;
 import org.simpleframework.xml.Order;
 import org.simpleframework.xml.Root;
 
 @Root(name = "serverDescription")
-//@Namespace(reference = "http://ns.taverna.org.uk/2010/xml/server/rest/")
+@Namespace(reference = "http://ns.taverna.org.uk/2010/xml/server/rest/")
 @Order(elements={"runs", "policy", "feed"})
 public class ServerDescription extends VersionedElement {
 	
