@@ -54,10 +54,9 @@ import uk.org.taverna.server.client.connection.MimeType;
 import uk.org.taverna.server.client.connection.UserCredentials;
 import uk.org.taverna.server.client.connection.params.ConnectionParams;
 import uk.org.taverna.server.client.util.URIUtils;
+import uk.org.taverna.server.client.xml.AndroidXMLReader;
 import uk.org.taverna.server.client.xml.ResourceLabel;
 import uk.org.taverna.server.client.xml.ServerResources;
-import uk.org.taverna.server.client.xml.XMLReader;
-import uk.org.taverna.server.client.xml.XMLWriter;
 
 /**
  * The Server class represents a connection to a Taverna Server instance
@@ -69,7 +68,7 @@ import uk.org.taverna.server.client.xml.XMLWriter;
  * connected to this Taverna Server then it will be returned, otherwise a new
  * Server instance is created and returned.
  * 
- * @author Robert Haines
+ * @author Robert Haines (Modified by Hyde Zhang)
  */
 public final class Server {
 
@@ -86,8 +85,8 @@ public final class Server {
 
 	private final URI uri;
 	private final Map<String, Map<String, Run>> runs;
-
-	private final XMLReader reader;
+	
+	private final AndroidXMLReader androidReader;
 	private ServerResources resources;
 
 	/**
@@ -100,8 +99,8 @@ public final class Server {
 		this.uri = URIUtils.stripUserInfo(uri);
 
 		connection = ConnectionFactory.getConnection(this.uri, params);
-
-		reader = new XMLReader(connection);
+		
+		androidReader = new AndroidXMLReader(connection);
 		resources = null;
 
 		// initialise run list
@@ -141,19 +140,19 @@ public final class Server {
 	 * @param id
 	 *            The id of the Run instance to get.
 	 * @return the Run instance.
-	 */
-	public Run getRun(String id, UserCredentials credentials) {
-		return getRunsFromServer(credentials).get(id);
+	 *//*
+	public Run getRun(String id, UserCredentials credentials, boolean forMobile) {
+		return getRunsFromServer(credentials, forMobile).get(id);
 	}
 
-	/**
+	*//**
 	 * Get all the Run instances hosted on this server.
 	 * 
 	 * @return all the Run instances hosted on this server.
-	 */
-	public Collection<Run> getRuns(UserCredentials credentials) {
-		return getRunsFromServer(credentials).values();
-	}
+	 *//*
+	public Collection<Run> getRuns(UserCredentials credentials, boolean forMobile) {
+		return getRunsFromServer(credentials, forMobile).values();
+	}*/
 
 	/**
 	 * Delete all runs on this server instance. Only the runs owned by the
@@ -161,20 +160,20 @@ public final class Server {
 	 * 
 	 * @param credentials
 	 *            The credentials to authorize the deletion.
-	 */
-	public void deleteAllRuns(UserCredentials credentials) {
+	 *//*
+	public void deleteAllRuns(UserCredentials credentials, boolean forMobile) {
 		// Calling getRuns() updates the user's run cache...
-		for (Run run : getRuns(credentials)) {
+		for (Run run : getRuns(credentials, forMobile)) {
 			run.delete();
 		}
 
 		// ... so we can clear it here now we've deleted them all.
 		runs.remove(credentials.getUsername());
-	}
+	}*/
 
-	private Map<String, Run> getRunsFromServer(UserCredentials credentials) {
+	/*private Map<String, Run> getRunsFromServer(UserCredentials credentials, boolean forMobile) {
 		// Get this user's run list.
-		URI uri = getLink(ResourceLabel.RUNS);
+		URI uri = getLink(ResourceLabel.RUNS, forMobile);
 		Map<String, URI> runList = reader.readRunList(uri, credentials);
 
 		// Get this user's run cache.
@@ -203,7 +202,7 @@ public final class Server {
 		assert (userRuns.size() == runList.size());
 
 		return userRuns;
-	}
+	}*/
 
 	private Map<String, Run> getUserRunCache(String user) {
 		Map<String, Run> userRuns = runs.get(user);
@@ -218,7 +217,8 @@ public final class Server {
 	private ServerResources getServerResources() {
 		if (resources == null) {
 			URI restURI = URIUtils.appendToPath(uri, REST_ENDPOINT);
-			resources = reader.readServerResources(restURI);
+			
+			resources = androidReader.readServerResources(restURI);
 		}
 
 		return resources;
@@ -385,7 +385,7 @@ public final class Server {
 		return rename;
 	}
 
-	URI mkdir(URI root, String name, UserCredentials credentials) {
+	/*URI mkdir(URI root, String name, UserCredentials credentials) {
 		if (name.contains("/")) {
 			throw new IllegalArgumentException(
 					"creation of subdirectories directly (" + name + ")");
@@ -393,10 +393,10 @@ public final class Server {
 
 		return connection.create(root, XMLWriter.mkdir(name), MimeType.XML,
 				credentials);
-	}
+	}*/
 
-	XMLReader getXMLReader() {
-		return reader;
+	AndroidXMLReader getXMLReader() {
+		return androidReader;
 	}
 
 	private URI getLink(ResourceLabel key) {

@@ -35,7 +35,7 @@ package uk.org.taverna.server.client.util;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.apache.http.client.utils.URIBuilder;
+import local.org.apache.http.client.utils.URIBuilder;
 
 /**
  * A small set of utility methods to ease working with URIs. URI objects are

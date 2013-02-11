@@ -55,17 +55,16 @@ import uk.org.taverna.server.client.connection.MimeType;
 import uk.org.taverna.server.client.connection.UserCredentials;
 import uk.org.taverna.server.client.util.IOUtils;
 import uk.org.taverna.server.client.util.URIUtils;
+import uk.org.taverna.server.client.xml.AndroidXMLReader;
+import uk.org.taverna.server.client.xml.AndroidXMLWriter;
 import uk.org.taverna.server.client.xml.ResourceLabel;
 import uk.org.taverna.server.client.xml.RunResources;
-import uk.org.taverna.server.client.xml.XMLReader;
-import uk.org.taverna.server.client.xml.XMLWriter;
-
 /**
  * The Run class represents a workflow run on a Taverna Server instance. It is
  * created by supplying a Server instance on which to create it and a workflow
  * to be run.
  * 
- * @author Robert Haines
+ * @author Robert Haines (modified by Hyde Zhang)
  */
 public final class Run {
 
@@ -131,6 +130,7 @@ public final class Run {
 	 * @param server
 	 * @param workflow
 	 * @param credentials
+	 * @param "forMobile" indicates whether the run will be created for an Android application
 	 * @return
 	 */
 	public static Run create(Server server, byte[] workflow,
@@ -145,6 +145,7 @@ public final class Run {
 	 * @param server
 	 * @param workflow
 	 * @param credentials
+	 * @param "forMobile" indicates whether the run will be created for an Android application
 	 * @return
 	 * @throws IOException
 	 */
@@ -751,18 +752,18 @@ public final class Run {
 	 *             if the credentials in this Run are not the owner's.
 	 * @see {@link RunPermission}
 	 */
-	public Map<String, RunPermission> getPermissions() {
+	/*public Map<String, RunPermission> getPermissions() {
 		if (!isOwner()) {
 			throw new IllegalUserAccessException(credentials.getUsername());
 		}
 
-		XMLReader reader = server.getXMLReader();
+		AndroidXMLReader reader = server.getXMLReader();
 
 		Map<String, RunPermission> perms = reader.readRunPermissions(
 				getLink(ResourceLabel.PERMISSIONS), credentials);
 
 		return perms;
-	}
+	}*/
 
 	/**
 	 * Return the permission granted to user for this run, if any. Only the
@@ -775,13 +776,13 @@ public final class Run {
 	 *             if the credentials in this Run are not the owner's.
 	 * @see {@link RunPermission}
 	 */
-	public RunPermission getPermission(String username) {
+	/*public RunPermission getPermission(String username) {
 		if (!isOwner()) {
 			throw new IllegalUserAccessException(credentials.getUsername());
 		}
 
 		return getPermissions().get(username);
-	}
+	}*/
 
 	/**
 	 * Grant the specified user the stated permission.
@@ -800,7 +801,7 @@ public final class Run {
 	 *             if the credentials in this Run are not the owner's.
 	 * @see {@link RunPermission}
 	 */
-	public URI setPermission(String username, RunPermission permission) {
+	/*public URI setPermission(String username, RunPermission permission) {
 		if (!isOwner()) {
 			throw new IllegalUserAccessException(credentials.getUsername());
 		}
@@ -813,7 +814,7 @@ public final class Run {
 
 		return server.createResource(getLink(ResourceLabel.PERMISSIONS),
 				content, credentials);
-	}
+	}*/
 
 	/**
 	 * Get all the credentials that have been provided for this run.
@@ -825,18 +826,18 @@ public final class Run {
 	 * @throws IllegalUserAccessException
 	 *             if the credentials in this Run are not the owner's.
 	 */
-	public Map<URI, URI> getServiceCredentials() {
+	/*public Map<URI, URI> getServiceCredentials() {
 		if (!isOwner()) {
 			throw new IllegalUserAccessException(credentials.getUsername());
 		}
 
-		XMLReader reader = server.getXMLReader();
+		AndroidXMLReader reader = server.getXMLReader();
 
 		Map<URI, URI> creds = reader.readRunServiceCredentials(
 				getLink(ResourceLabel.CREDENTIALS), credentials);
 
 		return creds;
-	}
+	}*/
 
 	/**
 	 * Get the credential resource URI that Taverna Server is using to provide
@@ -849,9 +850,9 @@ public final class Run {
 	 * @throws IllegalUserAccessException
 	 *             if the credentials in this Run are not the owner's.
 	 */
-	public URI getServiceCredential(URI serviceURI) {
+	/*public URI getServiceCredential(URI serviceURI) {
 		return getServiceCredentials().get(serviceURI);
-	}
+	}*/
 
 	/**
 	 * Provide a username and password credential for the secure service at the
@@ -869,7 +870,7 @@ public final class Run {
 	 * @throws IllegalUserAccessException
 	 *             if the credentials in this Run are not the owner's.
 	 */
-	public URI setServiceCredential(URI serviceURI, String username,
+	/*public URI setServiceCredential(URI serviceURI, String username,
 			String password) {
 		if (!isOwner()) {
 			throw new IllegalUserAccessException(credentials.getUsername());
@@ -887,7 +888,7 @@ public final class Run {
 		} else {
 			return server.updateResource(credURI, content, credentials);
 		}
-	}
+	}*/
 
 	/**
 	 * Provide a client certificate credential for the secure service at the
@@ -908,7 +909,7 @@ public final class Run {
 	 * @throws IllegalUserAccessException
 	 *             if the credentials in this Run are not the owner's.
 	 */
-	public URI setServiceCredential(URI serviceURI, File keypair,
+	/*public URI setServiceCredential(URI serviceURI, File keypair,
 			String password) throws IOException {
 		if (!isOwner()) {
 			throw new IllegalUserAccessException(credentials.getUsername());
@@ -918,7 +919,7 @@ public final class Run {
 
 		return setServiceKeyPairCredential(serviceURI, remoteName, password,
 				DEFAULT_CERTIFICATE_ALIAS);
-	}
+	}*/
 
 	/**
 	 * Provide a client certificate credential for the secure service at the
@@ -935,7 +936,7 @@ public final class Run {
 	 * @throws IllegalUserAccessException
 	 *             if the credentials in this Run are not the owner's.
 	 */
-	public URI setServiceCredential(URI serviceURI, InputStream keypair,
+	/*public URI setServiceCredential(URI serviceURI, InputStream keypair,
 			String password) {
 		if (!isOwner()) {
 			throw new IllegalUserAccessException(credentials.getUsername());
@@ -948,9 +949,9 @@ public final class Run {
 		return setServiceKeyPairCredential(serviceURI, remoteFile, password,
 				DEFAULT_CERTIFICATE_ALIAS);
 
-	}
+	}*/
 
-	private URI setServiceKeyPairCredential(URI serviceURI, String remoteFile,
+	/*private URI setServiceKeyPairCredential(URI serviceURI, String remoteFile,
 			String password, String alias) {
 		// Is this a new credential or an update to an existing one?
 		URI credURI = getServiceCredential(serviceURI);
@@ -964,7 +965,7 @@ public final class Run {
 		} else {
 			return server.updateResource(credURI, content, credentials);
 		}
-	}
+	}*/
 
 	/**
 	 * Delete the credential that has been provided for the specified service.
@@ -977,14 +978,14 @@ public final class Run {
 	 * @throws IllegalUserAccessException
 	 *             if the credentials in this Run are not the owner's.
 	 */
-	public boolean deleteServiceCredential(URI serviceURI) {
+	/*public boolean deleteServiceCredential(URI serviceURI) {
 		if (!isOwner()) {
 			throw new IllegalUserAccessException(credentials.getUsername());
 		}
 
 		return server.deleteResource(getServiceCredential(serviceURI),
 				credentials);
-	}
+	}*/
 
 	/**
 	 * Delete all credentials associated with this workflow run.
@@ -1016,18 +1017,18 @@ public final class Run {
 	 * @throws IllegalUserAccessException
 	 *             if the credentials in this Run are not the owner's.
 	 */
-	public List<URI> getTrustedIdentities() {
+	/*public List<URI> getTrustedIdentities() {
 		if (!isOwner()) {
 			throw new IllegalUserAccessException(credentials.getUsername());
 		}
 
-		XMLReader reader = server.getXMLReader();
+		AndroidXMLReader reader = server.getXMLReader();
 
 		List<URI> trusts = reader.readRunTrustedIdentities(
 				getLink(ResourceLabel.TRUSTS), credentials);
 
 		return trusts;
-	}
+	}*/
 
 	/**
 	 * Add a trusted identity (server public key) to verify peers when using
@@ -1044,7 +1045,7 @@ public final class Run {
 	 * @throws IllegalUserAccessException
 	 *             if the credentials in this Run are not the owner's.
 	 */
-	public URI setTrustedIdentity(File certificate) throws IOException {
+	/*public URI setTrustedIdentity(File certificate) throws IOException {
 		if (!isOwner()) {
 			throw new IllegalUserAccessException(credentials.getUsername());
 		}
@@ -1052,7 +1053,7 @@ public final class Run {
 		String remoteFile = uploadFile(certificate);
 
 		return setTrustedIdentity(remoteFile);
-	}
+	}*/
 
 	/**
 	 * Add a trusted identity (server public key) to verify peers when using
@@ -1067,7 +1068,7 @@ public final class Run {
 	 * @throws IllegalUserAccessException
 	 *             if the credentials in this Run are not the owner's.
 	 */
-	public URI setTrustedIdentity(InputStream certificate) {
+	/*public URI setTrustedIdentity(InputStream certificate) {
 		if (!isOwner()) {
 			throw new IllegalUserAccessException(credentials.getUsername());
 		}
@@ -1085,7 +1086,7 @@ public final class Run {
 
 		return server.createResource(getLink(ResourceLabel.TRUSTS), content,
 				credentials);
-	}
+	}*/
 
 	/**
 	 * Delete the trusted identity resource at the specified URI from the remote
@@ -1185,14 +1186,14 @@ public final class Run {
 	 *             if an attempt to create a directory more than one level deep
 	 *             is made.
 	 */
-	public URI mkdir(String dir) {
+	/*public URI mkdir(String dir) {
 		if (dir.contains("/")) {
 			throw new IllegalArgumentException(
 					"Directories can only be created one level deep.");
 		}
 
 		return server.mkdir(getLink(ResourceLabel.WDIR), dir, credentials);
-	}
+	}*/
 
 	/*
 	 * Set all the inputs on the server. The inputs must have been set prior to
@@ -1229,9 +1230,9 @@ public final class Run {
 		byte[] value;
 
 		if (port.isFile()) {
-			value = XMLWriter.inputFile(port.getFile());
+			value = AndroidXMLWriter.inputFile(port.getFile());
 		} else {
-			value = XMLWriter.inputValue(port.getValue());
+			value = AndroidXMLWriter.inputValue(port.getValue());
 		}
 
 		server.updateResource(path, value, credentials);
@@ -1247,14 +1248,14 @@ public final class Run {
 	}
 
 	private Map<String, InputPort> getInputPortInfo() {
-		XMLReader reader = server.getXMLReader();
+		AndroidXMLReader reader = server.getXMLReader();
 
 		return reader.readInputPortDescription(this,
 				getLink(ResourceLabel.EXPECTED_INPUTS), credentials);
 	}
 
 	private Map<String, OutputPort> getOutputPortInfo() {
-		XMLReader reader = server.getXMLReader();
+		AndroidXMLReader reader = server.getXMLReader();
 
 		return reader.readOutputPortDescription(this,
 				getLink(ResourceLabel.OUTPUT), credentials);

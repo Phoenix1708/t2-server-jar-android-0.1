@@ -35,7 +35,7 @@ package uk.org.taverna.server.client.connection;
 import org.apache.http.HttpRequest;
 import org.apache.http.auth.AuthenticationException;
 import org.apache.http.auth.Credentials;
-import org.apache.http.impl.auth.AuthSchemeBase;
+import local.org.apache.http.impl.auth.AuthSchemeBase;
 import org.apache.http.protocol.HttpContext;
 
 /**

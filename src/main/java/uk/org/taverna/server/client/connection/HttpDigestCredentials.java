@@ -33,7 +33,7 @@
 package uk.org.taverna.server.client.connection;
 
 import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.impl.auth.DigestScheme;
+import local.org.apache.http.impl.auth.DigestScheme;
 
 /**
  * 
