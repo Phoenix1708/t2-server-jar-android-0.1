@@ -13,13 +13,13 @@ import org.simpleframework.xml.Root;
 @Order(elements={"expected", "baclava", "input"})
 public class TavernaRunInputs extends VersionedElement {
 
-	@Element
+	@Element(required = false)
 	protected Location expected;
 
-	@Element
+	@Element(required = false)
 	protected Location baclava;
 
-	@ElementList(inline = true, entry = "input")
+	@ElementList(inline = true, entry = "input", required = false)
 	protected List<Location> input;
 
 	public Location getExpected() {

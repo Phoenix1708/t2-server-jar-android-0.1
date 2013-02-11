@@ -5,10 +5,10 @@ import org.simpleframework.xml.Text;
 
 public class FilesystemCreationOperation {
 
-	@Text
+	@Text(required = false)
 	protected byte[] value;
 	
-	@Attribute
+	@Attribute(required = false)
 	protected String name;
 
 	public byte[] getValue() {

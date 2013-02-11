@@ -10,26 +10,26 @@ import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Order;
 import org.simpleframework.xml.Root;
 
-@Root(name = "listener")
+@Root(name = "listenerDescription")
 //@Namespace(reference = "http://ns.taverna.org.uk/2010/xml/server/rest/")
 @Order(elements={"configuration", "properties"})
 public class ListenerDescription extends VersionedElement {
 
-	@Element
+	@Element(required = false)
 	protected Location configuration;
 	
-	@Element
+	@Element(required = false)
     protected ListenerDescription.Properties properties;
     
-    @Attribute
+    @Attribute(required = false)
 	//@Namespace(prefix = "xlink", reference = "http://www.w3.org/1999/xlink")
     protected URI href;
     
-    @Attribute
+    @Attribute(required = false)
    // @Namespace(reference = "http://ns.taverna.org.uk/2010/xml/server/rest/")
     protected String name;
     
-    @Attribute
+    @Attribute(required = false)
     //@Namespace(reference = "http://ns.taverna.org.uk/2010/xml/server/rest/")
     protected String type;
     

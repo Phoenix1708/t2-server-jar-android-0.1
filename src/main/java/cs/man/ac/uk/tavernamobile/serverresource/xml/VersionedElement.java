@@ -1,19 +1,20 @@
 package cs.man.ac.uk.tavernamobile.serverresource.xml;
 
 import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Namespace;
 
 public abstract class VersionedElement {
 	
-	@Attribute
-	//@Namespace(prefix = "ts", reference = "http://ns.taverna.org.uk/2010/xml/server/")
+	@Attribute(required = false)
+	@Namespace(prefix = "ts", reference = "http://ns.taverna.org.uk/2010/xml/server/")
     protected String serverVersion;
 	
-	@Attribute
-	//@Namespace(prefix = "ts", reference = "http://ns.taverna.org.uk/2010/xml/server/")
+	@Attribute(required = false)
+	@Namespace(prefix = "ts", reference = "http://ns.taverna.org.uk/2010/xml/server/")
     protected String serverRevision;
 	
-    @Attribute
-    //@Namespace(prefix = "ts", reference = "http://ns.taverna.org.uk/2010/xml/server/")
+    @Attribute(required = false)
+    @Namespace(prefix = "ts", reference = "http://ns.taverna.org.uk/2010/xml/server/")
     protected String serverBuildTimestamp;
 
     public String getServerVersion() {

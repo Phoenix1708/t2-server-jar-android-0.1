@@ -38,7 +38,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.ParseException;
 import org.apache.http.entity.ContentType;
-import org.apache.http.protocol.HTTP;
+import local.org.apache.http.protocol.HTTP;
 
 /**
  * Static helpers for dealing with {@link HttpEntity}s.

@@ -12,19 +12,19 @@ import org.simpleframework.xml.Root;
 @Root(name = "trust")
 public class TrustDescriptor {
 
-	@Element
+	@Element(required = false)
     protected String certificateFile;
 	
-	@Element
+	@Element(required = false)
     protected String fileType;
 	
-	@Element
+	@Element(required = false)
     protected byte[] certificateBytes;
 	
-	@ElementList
+	@ElementList(required = false)
     protected List<String> serverName;
     
-    @Attribute
+    @Attribute(required = false)
     protected URI href;
 
     public String getCertificateFile() {

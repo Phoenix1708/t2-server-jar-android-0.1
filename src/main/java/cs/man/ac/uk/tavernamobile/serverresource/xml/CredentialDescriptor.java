@@ -7,10 +7,10 @@ import org.simpleframework.xml.Element;
 
 public abstract class CredentialDescriptor {
 
-    @Element
+    @Element(required = false)
     protected URI serviceURI;
     
-    @Attribute
+    @Attribute(required = false)
     protected URI href;
 
     public URI getServiceURI() {

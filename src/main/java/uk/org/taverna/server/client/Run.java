@@ -1226,7 +1226,7 @@ public final class Run {
 
 	private void setInputPort(InputPort port) {
 		URI path = URIUtils.appendToPath(getLink(ResourceLabel.INPUT),
-				"/input/" + port.getName());
+				"input/" + port.getName());
 		byte[] value;
 
 		if (port.isFile()) {

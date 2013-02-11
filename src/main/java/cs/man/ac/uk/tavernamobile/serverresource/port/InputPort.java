@@ -3,13 +3,15 @@ package cs.man.ac.uk.tavernamobile.serverresource.port;
 import java.net.URI;
 
 import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Namespace;
 import org.simpleframework.xml.Root;
 
 @Root(name = "input")
+@Namespace(reference = "http://ns.taverna.org.uk/2010/port/", prefix = "port")
 public class InputPort extends Port {
 	
-	@Attribute
-	//@Namespace(reference = "http://www.w3.org/1999/xlink")
+	@Attribute(required = false)
+	@Namespace(reference = "http://www.w3.org/1999/xlink")
     protected URI href;
 
 	public URI getHref() {

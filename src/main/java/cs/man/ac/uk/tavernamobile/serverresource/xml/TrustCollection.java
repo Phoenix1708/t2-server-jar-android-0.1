@@ -11,10 +11,10 @@ import org.simpleframework.xml.Root;
 @Root(name = "trusts")
 public class TrustCollection {
 
-	@ElementList(entry = "trust", inline = true)
+	@ElementList(entry = "trust", inline = true, required = false)
     protected List<TrustDescriptor> trust;
 	
-    @Attribute
+    @Attribute(required = false)
     protected URI href;
 
     public List<TrustDescriptor> getTrust() {

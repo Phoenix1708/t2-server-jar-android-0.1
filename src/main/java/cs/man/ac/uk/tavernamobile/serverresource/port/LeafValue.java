@@ -1,21 +1,23 @@
 package cs.man.ac.uk.tavernamobile.serverresource.port;
 
 import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Namespace;
 import org.simpleframework.xml.Root;
 
 @Root(name = "value")
+@Namespace(reference = "http://ns.taverna.org.uk/2010/port/", prefix = "port")
 public class LeafValue extends Value {
 
-	@Attribute
-	//@Namespace(reference = "http://ns.taverna.org.uk/2010/port/", prefix = "port")
+	@Attribute(required = false)
+	@Namespace(reference = "http://ns.taverna.org.uk/2010/port/", prefix = "port")
     protected String contentFile;
 	
-	@Attribute
-	//@Namespace(reference = "http://ns.taverna.org.uk/2010/port/", prefix = "port")
+	@Attribute(required = false)
+	@Namespace(reference = "http://ns.taverna.org.uk/2010/port/", prefix = "port")
     protected String contentType;
 	
-	@Attribute
-	//@Namespace(reference = "http://ns.taverna.org.uk/2010/port/", prefix = "port")
+	@Attribute(required = false)
+	@Namespace(reference = "http://ns.taverna.org.uk/2010/port/", prefix = "port")
     protected Long contentByteLength;
 	
 	public String getContentFile() {

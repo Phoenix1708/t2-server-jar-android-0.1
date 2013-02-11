@@ -8,7 +8,7 @@ import org.simpleframework.xml.Root;
 @Root
 public class Location {
 	
-	@Attribute
+	@Attribute(required = false)
 	//@Namespace(prefix = "xlink", reference = "http://www.w3.org/1999/xlink")
 	protected URI href;
 

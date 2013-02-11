@@ -6,16 +6,16 @@ import org.simpleframework.xml.Root;
 @Root(name = "output")
 public class OutputPort extends Port {
 
-	@Element
+	@Element(required = false)
 	protected LeafValue value;
 	
-	@Element
+	@Element(required = false)
     protected ListValue list;
 	
-	@Element
+	@Element(required = false)
     protected ErrorValue error;
 	
-	@Element
+	@Element(required = false)
     protected AbsentValue absent;
 
 	public LeafValue getValue() {

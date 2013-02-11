@@ -6,10 +6,10 @@ import org.simpleframework.xml.Root;
 @Root(name = "permission")
 public class PermissionDescription {
 
-	@Element
+	@Element(required = false)
     protected String userName;
 	
-	@Element
+	@Element(required = false)
     protected Permission permission;
 
     /**

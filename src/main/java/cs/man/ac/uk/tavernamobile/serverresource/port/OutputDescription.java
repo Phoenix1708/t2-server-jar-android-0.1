@@ -8,7 +8,7 @@ import org.simpleframework.xml.Root;
 @Root(name = "workflowOutputs")
 public class OutputDescription extends PortDescription {
 	
-	@ElementList(inline = true)
+	@ElementList(inline = true, required = false)
 	protected List<OutputPort> output;
 
 	public List<OutputPort> getOutput() {

@@ -3,19 +3,20 @@ package cs.man.ac.uk.tavernamobile.serverresource.port;
 import java.net.URI;
 
 import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Namespace;
 
 public abstract class PortDescription {
 	
-	@Attribute
-	//@Namespace(reference = "http://ns.taverna.org.uk/2010/port/", prefix = "port")
+	@Attribute(required = false)
+	@Namespace(reference = "http://ns.taverna.org.uk/2010/port/", prefix = "port")
     protected String workflowId;
 	
-    @Attribute
-    //@Namespace(reference = "http://ns.taverna.org.uk/2010/port/", prefix = "port")
+    @Attribute(required = false)
+    @Namespace(reference = "http://ns.taverna.org.uk/2010/port/", prefix = "port")
     protected URI workflowRun;
     
-    @Attribute
-    //@Namespace(reference = "http://ns.taverna.org.uk/2010/port/", prefix = "port")
+    @Attribute(required = false)
+    @Namespace(reference = "http://ns.taverna.org.uk/2010/port/", prefix = "port")
     protected String workflowRunId;
 
 	public String getWorkflowId() {

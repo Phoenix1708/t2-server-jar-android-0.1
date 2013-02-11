@@ -6,16 +6,16 @@ import org.simpleframework.xml.Root;
 @Root(name = "securityDescriptor")
 public class SecurityDescriptor extends VersionedElement {
 
-	@Element
+	@Element(required = false)
 	protected String owner;
 	
-	@Element
+	@Element(required = false)
 	protected Location permissions;
 	
-	@Element
+	@Element(required = false)
 	protected CredentialCollection credentials;
 	
-	@Element
+	@Element(required = false)
 	protected TrustCollection trusts;
 
 	public String getOwner() {

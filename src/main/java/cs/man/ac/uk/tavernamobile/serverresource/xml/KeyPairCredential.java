@@ -9,16 +9,16 @@ public class KeyPairCredential extends CredentialDescriptor
     @Element(required = true)
     protected String credentialName;
     
-    @Element
+    @Element(required = false)
     protected String credentialFile;
     
-    @Element
+    @Element(required = false)
     protected String fileType;
     
-    @Element
+    @Element(required = false)
     protected String unlockPassword;
     
-    @Element
+    @Element(required = false)
     protected byte[] credentialBytes;
 
     public String getCredentialName() {

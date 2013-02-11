@@ -17,40 +17,40 @@ import org.simpleframework.xml.Text;
 })*/
 public class RunDescription extends VersionedElement {
 
-	@Element
+	@Element(required = false)
 	protected RunDescription.Expiry expiry;
 
-	@Element
+	@Element(required = false)
 	protected Location creationWorkflow;
 
-	@Element
+	@Element(required = false)
 	protected Location createTime;
 
-	@Element
+	@Element(required = false)
 	protected Location startTime;
 
-	@Element
+	@Element(required = false)
 	protected Location finishTime;
 
-	@Element
+	@Element(required = false)
 	protected Location status;
 
-	@Element
+	@Element(required = false)
 	protected Location workingDirectory;
 
-	@Element
+	@Element(required = false)
 	protected Location inputs;
 
-	@Element
+	@Element(required = false)
 	protected Location output;
 
-	@Element
+	@Element(required = false)
 	protected Location securityContext;
 
-	@Element
+	@Element(required = false)
 	protected RunDescription.Listeners listeners;
 
-	@Attribute
+	@Attribute(required = false)
 	protected String owner;
 
 	public RunDescription.Expiry getExpiry() {

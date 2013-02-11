@@ -10,10 +10,10 @@ import org.simpleframework.xml.Root;
 @Root(name = "credentials")
 public class CredentialCollection {
 	
-	@ElementList(entry = "credential", inline = true)
+	@ElementList(entry = "credential", inline = true, required = false)
 	protected List<Credential> credential;
 	
-    @Attribute
+    @Attribute(required = false)
     protected URI href;
 
 	public List<Credential> getCredential() {

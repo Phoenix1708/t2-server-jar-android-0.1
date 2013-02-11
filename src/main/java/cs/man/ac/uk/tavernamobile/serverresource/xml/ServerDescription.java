@@ -9,13 +9,13 @@ import org.simpleframework.xml.Root;
 @Order(elements={"runs", "policy", "feed"})
 public class ServerDescription extends VersionedElement {
 	
-	@Element
+	@Element(required = false)
 	protected Location runs;
 	
-	@Element
+	@Element(required = false)
     protected Location policy;
 	
-	@Element
+	@Element(required = false)
     protected Location feed;
     
 	public Location getRuns() {

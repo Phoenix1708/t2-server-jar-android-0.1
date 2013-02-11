@@ -2,22 +2,25 @@ package cs.man.ac.uk.tavernamobile.serverresource.xml;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Namespace;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Text;
 
 @Root(name = "runInput")
+@Namespace(reference = "http://ns.taverna.org.uk/2010/xml/server/rest/")
 public class InputDescription extends VersionedElement {
 	
-	@Element
+	@Element(required = false)
 	protected InputDescription.File file;
 	
-	@Element
+	@Element(required = false)
     protected InputDescription.Reference reference;
 	
-	@Element
+	@Element(required = false)
     protected InputDescription.Value value;
 	
-    @Attribute
+    @Attribute(required = false)
+    @Namespace(reference = "http://ns.taverna.org.uk/2010/xml/server/rest/")
     protected String name;
 
     /**

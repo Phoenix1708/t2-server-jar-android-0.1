@@ -1,21 +1,23 @@
 package cs.man.ac.uk.tavernamobile.serverresource.port;
 
 import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Namespace;
 import org.simpleframework.xml.Root;
 
 @Root(name = "error")
+@Namespace(reference = "http://ns.taverna.org.uk/2010/port/", prefix = "port")
 public class ErrorValue extends Value {
 
-	@Attribute
-	//@Namespace(prefix = "port", reference = "http://ns.taverna.org.uk/2010/port/")
+	@Attribute(required = false)
+	@Namespace(prefix = "port", reference = "http://ns.taverna.org.uk/2010/port/")
 	protected Integer depth;
 	
-	@Attribute
-	//@Namespace(prefix = "port", reference = "http://ns.taverna.org.uk/2010/port/")
+	@Attribute(required = false)
+	@Namespace(prefix = "port", reference = "http://ns.taverna.org.uk/2010/port/")
 	protected String errorFile;
 	
-	@Attribute
-	//@Namespace(prefix = "port", reference = "http://ns.taverna.org.uk/2010/port/")
+	@Attribute(required = false)
+	@Namespace(prefix = "port", reference = "http://ns.taverna.org.uk/2010/port/")
 	protected Long errorByteLength;
 
 	public Integer getDepth() {

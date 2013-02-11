@@ -6,9 +6,9 @@ import org.simpleframework.xml.Root;
 @Root(name = "credentials")
 public class Credential {
 	
-	@Element
+	@Element(required = false)
     protected KeyPairCredential keypair;
-    @Element
+    @Element(required = false)
     protected PasswordCredential userpass;
     
 	public KeyPairCredential getKeypair() {

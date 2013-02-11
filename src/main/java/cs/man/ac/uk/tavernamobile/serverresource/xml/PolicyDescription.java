@@ -9,16 +9,16 @@ import org.simpleframework.xml.Root;
 @Order(elements={"runLimit", "permittedWorkflows", "permittedListenerTypes", "enabledNotificationFabrics"})
 public class PolicyDescription extends VersionedElement {
 
-	@Element
+	@Element(required = false)
 	protected Location runLimit;
 	
-	@Element
+	@Element(required = false)
     protected Location permittedWorkflows;
 	
-	@Element
+	@Element(required = false)
     protected Location permittedListenerTypes;
 	
-	@Element
+	@Element(required = false)
     protected Location enabledNotificationFabrics;
 	
 	public Location getRunLimit() {
