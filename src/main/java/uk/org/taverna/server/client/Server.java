@@ -85,7 +85,7 @@ public final class Server {
 
 	private final URI uri;
 	private final Map<String, Map<String, Run>> runs;
-	
+
 	private final AndroidXMLReader androidReader;
 	private ServerResources resources;
 
@@ -99,7 +99,7 @@ public final class Server {
 		this.uri = URIUtils.stripUserInfo(uri);
 
 		connection = ConnectionFactory.getConnection(this.uri, params);
-		
+
 		androidReader = new AndroidXMLReader(connection);
 		resources = null;
 
@@ -140,19 +140,19 @@ public final class Server {
 	 * @param id
 	 *            The id of the Run instance to get.
 	 * @return the Run instance.
-	 *//*
-	public Run getRun(String id, UserCredentials credentials, boolean forMobile) {
-		return getRunsFromServer(credentials, forMobile).get(id);
+	 */
+	public Run getRun(String id, UserCredentials credentials) {
+		return getRunsFromServer(credentials).get(id);
 	}
 
-	*//**
+	/**
 	 * Get all the Run instances hosted on this server.
 	 * 
 	 * @return all the Run instances hosted on this server.
-	 *//*
-	public Collection<Run> getRuns(UserCredentials credentials, boolean forMobile) {
-		return getRunsFromServer(credentials, forMobile).values();
-	}*/
+	 */
+	public Collection<Run> getRuns(UserCredentials credentials) {
+		return getRunsFromServer(credentials).values();
+	}
 
 	/**
 	 * Delete all runs on this server instance. Only the runs owned by the
@@ -160,21 +160,21 @@ public final class Server {
 	 * 
 	 * @param credentials
 	 *            The credentials to authorize the deletion.
-	 *//*
-	public void deleteAllRuns(UserCredentials credentials, boolean forMobile) {
+	 */
+	public void deleteAllRuns(UserCredentials credentials) {
 		// Calling getRuns() updates the user's run cache...
-		for (Run run : getRuns(credentials, forMobile)) {
+		for (Run run : getRuns(credentials)) {
 			run.delete();
 		}
 
 		// ... so we can clear it here now we've deleted them all.
 		runs.remove(credentials.getUsername());
-	}*/
+	}
 
-	/*private Map<String, Run> getRunsFromServer(UserCredentials credentials, boolean forMobile) {
+	private Map<String, Run> getRunsFromServer(UserCredentials credentials) {
 		// Get this user's run list.
-		URI uri = getLink(ResourceLabel.RUNS, forMobile);
-		Map<String, URI> runList = reader.readRunList(uri, credentials);
+		URI uri = getLink(ResourceLabel.RUNS);
+		Map<String, URI> runList = androidReader.readRunList(uri, credentials);
 
 		// Get this user's run cache.
 		Map<String, Run> userRuns = getUserRunCache(credentials.getUsername());
@@ -202,7 +202,7 @@ public final class Server {
 		assert (userRuns.size() == runList.size());
 
 		return userRuns;
-	}*/
+	}
 
 	private Map<String, Run> getUserRunCache(String user) {
 		Map<String, Run> userRuns = runs.get(user);
@@ -217,7 +217,7 @@ public final class Server {
 	private ServerResources getServerResources() {
 		if (resources == null) {
 			URI restURI = URIUtils.appendToPath(uri, REST_ENDPOINT);
-			
+
 			resources = androidReader.readServerResources(restURI);
 		}
 
@@ -282,7 +282,9 @@ public final class Server {
 	 * @return the id of the new run as returned by the server.
 	 */
 	URI initializeRun(byte[] workflow, UserCredentials credentials) {
-		URI location = connection.create(getLink(ResourceLabel.RUNS), workflow,
+		URI location = null;
+		
+		location = connection.create(getLink(ResourceLabel.RUNS), workflow,
 				MimeType.T2FLOW, credentials);
 
 		return location;

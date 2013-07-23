@@ -47,10 +47,13 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
+import org.apache.http.client.HttpClient;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.AllowAllHostnameVerifier;
 import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
 
 import uk.org.taverna.server.client.connection.params.ConnectionPNames;
 import uk.org.taverna.server.client.connection.params.ConnectionParams;
@@ -113,6 +116,7 @@ public class HttpsConnection extends HttpConnection implements ConnectionPNames 
 				SchemeRegistry schemeRegistry = new SchemeRegistry();
 				schemeRegistry.register(httpsScheme);
 
+				HttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
 				httpClient.getConnectionManager().getSchemeRegistry()
 						.register(httpsScheme);
 			} catch (KeyManagementException e) {

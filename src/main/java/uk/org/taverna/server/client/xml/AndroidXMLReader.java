@@ -1,7 +1,6 @@
 package uk.org.taverna.server.client.xml;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -11,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
@@ -19,8 +19,10 @@ import uk.org.taverna.server.client.OutputPort;
 import uk.org.taverna.server.client.Port;
 import uk.org.taverna.server.client.PortValue;
 import uk.org.taverna.server.client.Run;
+import uk.org.taverna.server.client.connection.Connection;
+import uk.org.taverna.server.client.connection.MimeType;
 import uk.org.taverna.server.client.connection.UserCredentials;
-import uk.org.taverna.server.client.xml.ServerResources;
+import uk.org.taverna.server.client.util.URIUtils;
 import cs.man.ac.uk.tavernamobile.serverresource.port.ErrorValue;
 import cs.man.ac.uk.tavernamobile.serverresource.port.InputDescription;
 import cs.man.ac.uk.tavernamobile.serverresource.port.LeafValue;
@@ -32,15 +34,11 @@ import cs.man.ac.uk.tavernamobile.serverresource.xml.Location;
 import cs.man.ac.uk.tavernamobile.serverresource.xml.PolicyDescription;
 import cs.man.ac.uk.tavernamobile.serverresource.xml.PropertyDescription;
 import cs.man.ac.uk.tavernamobile.serverresource.xml.RunDescription;
+import cs.man.ac.uk.tavernamobile.serverresource.xml.RunList;
 import cs.man.ac.uk.tavernamobile.serverresource.xml.SecurityDescriptor;
 import cs.man.ac.uk.tavernamobile.serverresource.xml.ServerDescription;
+import cs.man.ac.uk.tavernamobile.serverresource.xml.TavernaRun;
 import cs.man.ac.uk.tavernamobile.serverresource.xml.TavernaRunInputs;
-
-import uk.org.taverna.server.client.connection.Connection;
-import uk.org.taverna.server.client.connection.MimeType;
-import uk.org.taverna.server.client.util.URIUtils;
-import uk.org.taverna.server.client.xml.ResourceLabel;
-import uk.org.taverna.server.client.xml.RunResources;
 
 public class AndroidXMLReader {
 
@@ -54,17 +52,17 @@ public class AndroidXMLReader {
 
 		Object resources = null;
 		InputStream is = connection.readStream(uri, MimeType.XML, credentials);
-		
+
 		/***** for debug only *****/
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	    // Fake code simulating the copy
-	    // You can generally do better with nio if you need...
-	    // And please, unlike me, do something about the Exceptions :D
-	    byte[] buffer = new byte[1024];
-	    int len;
-	    try {
+		// Fake code simulating the copy
+		// You can generally do better with nio if you need...
+		// And please, unlike me, do something about the Exceptions :D
+		byte[] buffer = new byte[10240];
+		int len;
+		try {
 			while ((len = is.read(buffer)) > -1 ) {
-			    baos.write(buffer, 0, len);
+				baos.write(buffer, 0, len);
 			}
 			baos.flush();
 		} catch (IOException e2) {
@@ -72,11 +70,11 @@ public class AndroidXMLReader {
 			e2.printStackTrace();
 		} 
 
-	    // Open new InputStreams using the recorded bytes
-	    // Can be repeated as many times as you wish
-	    InputStream is1 = new ByteArrayInputStream(baos.toByteArray());
-	    InputStream is2 = new ByteArrayInputStream(baos.toByteArray());
-		
+		// Open new InputStreams using the recorded bytes
+		// Can be repeated as many times as you wish
+		InputStream is1 = new ByteArrayInputStream(baos.toByteArray());
+		InputStream is2 = new ByteArrayInputStream(baos.toByteArray());
+
 		String myString = null;		
 		try {
 			myString = IOUtils.toString(is2, "UTF-8");
@@ -85,7 +83,7 @@ public class AndroidXMLReader {
 			e1.printStackTrace();
 		}
 		/*****end of for debug only *****/
-		
+
 		try {
 			Serializer serializer = new Persister(new CustomMatcher()); 
 			resources = serializer.read(classType, is1, false);
@@ -134,9 +132,14 @@ public class AndroidXMLReader {
 		InputDescription id = (InputDescription) read(uri, InputDescription.class, credentials);
 
 		Map<String, InputPort> ports = new HashMap<String, InputPort>();
-		for (cs.man.ac.uk.tavernamobile.serverresource.port.InputPort ip : id.getInput()) {
-			InputPort port = Port.newInputPort(run, ip.getName(), ip.getDepth());
-			ports.put(port.getName(), port);
+
+		List<cs.man.ac.uk.tavernamobile.serverresource.port.InputPort> inputPorts = id.getInput();
+		if (inputPorts != null){
+
+			for (cs.man.ac.uk.tavernamobile.serverresource.port.InputPort ip : id.getInput()) {
+				InputPort port = Port.newInputPort(run, ip.getName(), ip.getDepth());
+				ports.put(port.getName(), port);
+			}
 		}
 
 		return ports;
@@ -191,8 +194,11 @@ public class AndroidXMLReader {
 			ListValue lv = (ListValue) value;
 
 			List<PortValue> list = new ArrayList<PortValue>();
-			for (Value v : lv.getValueOrListOrError()) {
-				list.add(parseOutputPortValueStructure(run, v));
+			List<Value> lValue = lv.getValueOrListOrError();
+			if(lValue != null){
+				for (Value v : lValue) {
+					list.add(parseOutputPortValueStructure(run, v));
+				}
 			}
 
 			return PortValue.newPortList(run, lv.getHref(), list);
@@ -206,7 +212,7 @@ public class AndroidXMLReader {
 		// We should NOT get here!
 		return null;
 	}
-	
+
 	public RunResources readRunResources(URI uri, UserCredentials credentials) {
 		Map<ResourceLabel, URI> links = new HashMap<ResourceLabel, URI>();
 
@@ -262,8 +268,8 @@ public class AndroidXMLReader {
 		return new RunResources(links, owner);
 	}
 
-	/*public Map<String, URI> readRunList(URI uri, UserCredentials credentials) {
-		RunList runList = (RunList) read(uri, credentials);
+	public Map<String, URI> readRunList(URI uri, UserCredentials credentials) {
+		RunList runList = (RunList) read(uri, RunList.class, credentials);
 		List<TavernaRun> trs = runList.getRun();
 
 		Map<String, URI> runs = new HashMap<String, URI>(trs.size());
@@ -275,7 +281,7 @@ public class AndroidXMLReader {
 		return runs;
 	}
 
-	public Map<String, RunPermission> readRunPermissions(URI uri,
+	/*public Map<String, RunPermission> readRunPermissions(URI uri,
 			UserCredentials credentials) {
 		JAXBElement<?> root = (JAXBElement<?>) read(uri, credentials);
 		PermissionsDescription pd = (PermissionsDescription) root.getValue();

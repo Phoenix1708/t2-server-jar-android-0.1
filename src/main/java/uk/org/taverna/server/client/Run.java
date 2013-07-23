@@ -43,7 +43,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -74,12 +73,12 @@ public final class Run {
 	 */
 	private static final String BACLAVA_IN_FILE = "in.baclava";
 	private static final String BACLAVA_OUT_FILE = "out.baclava";
-	private static final String KEYPAIR_PREFIX = "keypair-";
+	/*private static final String KEYPAIR_PREFIX = "keypair-";
 	private static final String TRUST_PREFIX = "trust-";
 
 	private static final String DEFAULT_CERTIFICATE_ALIAS = "Imported Certificate";
 	private static final String DEFAULT_KEYPAIR_TYPE = "pkcs12";
-	private static final String DEFAULT_CERTIFICATE_TYPE = "x509";
+	private static final String DEFAULT_CERTIFICATE_TYPE = "x509";*/
 
 	private final URI uri;
 	private final Server server;
@@ -136,7 +135,7 @@ public final class Run {
 	public static Run create(Server server, byte[] workflow,
 			UserCredentials credentials) {
 		URI uri = server.initializeRun(workflow, credentials);
-
+		
 		return new Run(uri, server, workflow, credentials);
 	}
 
@@ -722,18 +721,18 @@ public final class Run {
 	 * 
 	 * @return the time that this Run was started.
 	 */
-	public Date getStartTime() {
+	/*public Date getStartTime() {
 		return getTime(ResourceLabel.START_TIME);
 	}
 
-	/**
+	 *//**
 	 * Get the time that this Run finished as a Date object.
 	 * 
 	 * @return the time that this Run finished.
-	 */
+	 *//*
 	public Date getFinishTime() {
 		return getTime(ResourceLabel.FINISH_TIME);
-	}
+	}*/
 
 	private Date getTime(ResourceLabel time) {
 		String dateTime = server.readResourceAsString(getLink(time),
@@ -741,6 +740,30 @@ public final class Run {
 		Calendar cal = DatatypeConverter.parseDateTime(dateTime);
 
 		return cal.getTime();
+	}
+
+	/**
+	 * Get the time that this Run was started as a Date object.
+	 * 
+	 * @return the time that this Run was started.
+	 */
+	public String getStartTime() {
+		return getmyTime(ResourceLabel.START_TIME);
+	}
+
+	/**
+	 * Get the time that this Run finished as a Date object.
+	 * 
+	 * @return the time that this Run finished.
+	 */
+	public String getFinishTime() {
+		return getmyTime(ResourceLabel.FINISH_TIME);
+	}
+
+	private String getmyTime(ResourceLabel time) {
+		String dateTime = server.readResourceAsString(getLink(time),
+				credentials);
+		return dateTime;
 	}
 
 	/**

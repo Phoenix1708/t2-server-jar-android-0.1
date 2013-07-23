@@ -66,13 +66,13 @@ public class HttpConnection extends AbstractConnection {
 
 	protected final ConnectionParams params;
 
-	protected final HttpClient httpClient;
+	protected HttpClient myhttpClient;
 	protected final HttpContext httpContext;
 
 	HttpConnection(URI uri, ConnectionParams params) {
 		this.uri = uri;
 		this.params = params;
-		httpClient = new DefaultHttpClient(new BasicHttpParams());
+		//myhttpClient = new DefaultHttpClient(new BasicHttpParams());
 		httpContext = new BasicHttpContext();
 	}
 
@@ -86,6 +86,7 @@ public class HttpConnection extends AbstractConnection {
 			credentials.authenticate(request, httpContext);
 		}
 
+		HttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
 		HttpResponse response = null;
 		try {
 			InputStreamEntity entity = new InputStreamEntity(content, length);
@@ -101,13 +102,22 @@ public class HttpConnection extends AbstractConnection {
 			location = URI
 					.create(response.getHeaders("location")[0].getValue());
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			try {
+				throw new Exception(e.getCause());
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			try {
+				throw new Exception(e.getCause());
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		} finally {
 			HttpClientUtils.closeQuietly(response);
+			HttpClientUtils.closeQuietly(httpClient);
 		}
 
 		return location;
@@ -148,9 +158,11 @@ public class HttpConnection extends AbstractConnection {
 			credentials.authenticate(request, httpContext);
 		}
 
+		myhttpClient = new DefaultHttpClient(new BasicHttpParams());
 		HttpResponse response = null;
 		try {
-			response = httpClient.execute(request, httpContext);
+			//response = httpClient.execute(request, httpContext);
+			response = myhttpClient.execute(request, httpContext);
 
 			HttpEntity entity = response.getEntity();
 			if (isSuccess(response, success)) {
@@ -165,7 +177,7 @@ public class HttpConnection extends AbstractConnection {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		} 
 
 		return null;
 	}
@@ -181,6 +193,9 @@ public class HttpConnection extends AbstractConnection {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			EntityUtils.consumeQuietly(entity);
+			HttpClientUtils.closeQuietly(myhttpClient);
 		}
 
 		return null;
@@ -195,6 +210,7 @@ public class HttpConnection extends AbstractConnection {
 			credentials.authenticate(request, httpContext);
 		}
 
+		HttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
 		HttpResponse response = null;
 		try {
 			InputStreamEntity entity = new InputStreamEntity(content, length);
@@ -230,6 +246,7 @@ public class HttpConnection extends AbstractConnection {
 			e.printStackTrace();
 		} finally {
 			HttpClientUtils.closeQuietly(response);
+			HttpClientUtils.closeQuietly(httpClient);
 		}
 
 		return null;
@@ -243,6 +260,7 @@ public class HttpConnection extends AbstractConnection {
 			credentials.authenticate(request, httpContext);
 		}
 
+		HttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
 		HttpResponse response = null;
 		try {
 			response = httpClient.execute(request, httpContext);
@@ -260,6 +278,7 @@ public class HttpConnection extends AbstractConnection {
 			e.printStackTrace();
 		} finally {
 			HttpClientUtils.closeQuietly(response);
+			HttpClientUtils.closeQuietly(httpClient);
 		}
 
 		return false;
