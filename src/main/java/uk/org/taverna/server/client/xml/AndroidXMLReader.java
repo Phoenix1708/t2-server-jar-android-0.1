@@ -55,9 +55,7 @@ public class AndroidXMLReader {
 
 		/***** for debug only *****/
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		// Fake code simulating the copy
-		// You can generally do better with nio if you need...
-		// And please, unlike me, do something about the Exceptions :D
+
 		byte[] buffer = new byte[10240];
 		int len;
 		try {
@@ -66,7 +64,6 @@ public class AndroidXMLReader {
 			}
 			baos.flush();
 		} catch (IOException e2) {
-			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		} 
 
@@ -79,7 +76,6 @@ public class AndroidXMLReader {
 		try {
 			myString = IOUtils.toString(is2, "UTF-8");
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		/*****end of for debug only *****/
